@@ -1,28 +1,26 @@
--- utils.lua holds my helper functions from lib in a single module
+-- utils/utils.lua
 
-local function require_relative(module_name)
-    -- Get the directory of the current script
-    local script_dir = debug.getinfo(1, "S").source:match("^@(.*)[/\\]") or "./"
+local utils = {}
+
+-- loads module from 'utils' dir
+function utils.require_local(module_name)
+    -- get path to calling script e.g. main.lua
+    local source = debug.getinfo(1, "S").source
+
+    local script_dir = source:match("@(.*)[/\\]")
     
-    -- Construct the path
-    local new_path = script_dir .. "lib/" .. module_name .. ".lua"
+    if not script_dir then
+        script_dir = "." -- fallback for REPL or error
+    end
     
-    -- Add to package.path
-    package.path = package.path .. ";" .. new_path
+    -- build path: ./utils/<module_name>.lua
+    local path_to_add = script_dir .. "/utils/" .. module_name .. ".lua"
+    package.path = package.path .. ";" .. path_to_add
     
-    return require_relative(module_name)
+    return require(module_name)
 end
 
-local pprint = require_relative("pprint.lua")
-local prompt = require_relative("prompt.lua")
-local queue = require_relative("queue.lua")
-local set = require_relative("set.lua")
-local stack = require_relative("stack.lua")
+-- optional: if one wants module to be always available 
+-- utils.prompt = utils.require_local("prompt") 
 
-return {
-	pprint = pprint,
-        prompt = prompt,
-        queue = queue,
-	set = set,
-	stack = stack,
-}
+return utils
