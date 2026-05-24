@@ -1,37 +1,39 @@
--- Check if the Queue is empty
-function isEmpty(queue)
-    return queue.front > queue.rear
+
+local queue_module = {}
+
+-- hold a class to do OOP
+local Queue = {}
+Queue.__index = Queue
+
+function Queue:enqueue(item)
+    table.insert(self, item)
 end
 
--- Enqueue an element to the rear of the Queue
-function enqueue(queue,item)
-    queue.rear = queue.rear + 1
-    queue[queue.rear] = item
+function Queue:dequeue()
+    if self:isEmpty() then return nil end
+    return table.remove(self, 1) -- FIFO: remove first element
 end
 
--- Dequeue an element from the front of the Queue
-function dequeue(queue)
-    if not isEmpty(queue) then
-        local item = queue[queue.front]
-        queue[queue.front] = nil
-        queue.front = queue.front + 1
-        return item
-    end
+function Queue:front()
+    return self[1]
 end
 
--- Get the element at the front of the Queue
-function front(queue)
-    if not isEmpty(queue) then
-        return queue[queue.front]
-    end
+function Queue:size()
+    return #self
 end
 
--- Get the size of the Queue
-function size(queue)
-    return queue.rear - queue.front + 1
+function Queue:isEmpty()
+    return #self == 0
 end
 
+-- factory function to do OOP
+function queueModule.createQueue()
+    local newInstance = {}
+    setmetatable(newInstance, Queue)
+    return newInstance
+end
 
+return queue_module
 
 
 
