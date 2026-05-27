@@ -1,29 +1,30 @@
 -- Create an empty stack
 
-stack = {}
+local S = {}
 
-function push(element)
+function S.push(stack,element)
     table.insert(stack,element)
 end
 
 
-function pop()
+function S.pop(stack)
     table.remove(stack)
 end
 
-function isEmpty()
+function S.isEmpty(stack)
     return #stack == 0
 end
 
 -- Function to get the top element
 
-function top()
+function S.top(stack)
 
-    if not isEmpty() then
+    if not S.isEmpty(stack) then
         return stack[#stack]
     else
         return nil
     end
 end
 
+return S
 

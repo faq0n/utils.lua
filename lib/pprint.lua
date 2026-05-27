@@ -1,5 +1,7 @@
 -- Helper function for pretty printing Lua tables
-local function pretty_print(tbl, indent_level)
+local P = {}
+
+function P.pretty_print(tbl, indent_level)
     indent_level = indent_level or 0
     local indent = string.rep("  ", indent_level) -- 2 spaces per level
     
@@ -53,9 +55,11 @@ local function pretty_print(tbl, indent_level)
 end
 
 -- Simple wrapper for one-liner usage
-function pprint(tbl)
+function P.pprint(tbl)
     print(pretty_print(tbl))
 end
+
+return P
 
 -- Example usage:
 -- local data = {
@@ -67,4 +71,4 @@ end
 --     },
 --     empty = {}
 -- }
--- pretty_print_table(data)
+-- pretty_print(data,4)
